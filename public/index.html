@@ -1,0 +1,113 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <title>Damn Example</title>
+    </head>
+
+    <body>
+        <h1>Liguagens de programação</h1><br>
+        <div id="list"></div>
+        <form onsubmit="createCourse(event)">
+            <input type="text" id="nome" placeholder="Nome" autofocus>
+            <input type="text" id="categoria" placeholder="Categoria" autofocus>
+            <input type="submit" value="Criar">  
+            <br><br><br><br><br>
+            <input type="submit" onclick="login()" value="Login">  
+            <input type="submit" onclick="logout()" value="Logout">  
+        </form>
+    </body>
+
+    <script>
+        function createCourse(event){
+            event.preventDefault();
+            var nome = document.querySelector('#nome').value,
+                categoria = document.querySelector('#categoria').value;
+
+            fetch('/init', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json',
+                    'Authorization': `JWT ${localStorage['token']}`
+                },
+                body:JSON.stringify({nome, categoria})
+            })
+                .then(resp => resp.json())
+                .then(() => {location.reload()})
+                .catch(() => {
+                    console.error('Error!');
+                })
+        }
+
+        function removeCourse(id){  
+            fetch(`/remove/${id}`, {
+                method: 'delete',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json',
+                    'Authorization': `JWT ${localStorage['token']}`
+                }
+            })
+            .then(resp => resp.json())
+            .then(() => {location.reload()})
+            .catch(() => {
+                console.error('Error!');
+            })
+        }
+
+        function login(){
+            event.preventDefault();
+
+            fetch('/login', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                },
+                body:JSON.stringify({name: 'Ramiro', password: '123'})
+            })
+            .then(resp => resp.json())
+            .then(resp => {
+                if(resp.token)
+                    localStorage['token'] = resp.token;
+            })
+        }
+
+        function logout(){
+            event.preventDefault();
+            localStorage['token'] = '';
+        }
+    </script>
+
+    <script>
+        window.onload = function(){
+            fetch('/init', {
+                method: 'get',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                }                
+            })
+            .then(function(response){
+                response.json().then(function(data){
+
+                    // var li = '';
+                    // var ul = '<ul>';
+                    // for(var i =0; i < data.length; i++){
+                        // li += '<li>'+data[i].nome+ ' - '+data[i].categoria+'</li>'+
+                        // `<button onclick=removeCourse(${data[i]._id})>x</button>`
+                    // }
+                    // document.getElementById("list").innerHTML = ul+li+'</ul>';
+
+                    const itens = data.map(item => '<li>'+item.nome+ ' - '+item.categoria+'</li>'+
+                    `<button onclick=removeCourse('${item._id}')>x</button>`);                    
+                    document.getElementById("list").innerHTML = '<ul>'+itens.join('')+'</ul>';
+                });
+            })       
+            .catch(() => {
+                console.error('Error!');
+            }) 
+        }
+    </script>
+</html>
