@@ -4,7 +4,7 @@ var load = require('express-load');
 
 var auth = require('./auth').auth;
 
-const PORT = process.env.port;
+const PORT = process.env.PORT;
 
 module.exports = function(){
     var app = express();
