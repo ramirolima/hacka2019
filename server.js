@@ -3,4 +3,4 @@ require('./config/database')('mongodb+srv://myuser:<mypass>@cluster0-xtv11.mongo
 
 app.listen(app.get('port'), function(){
      console.log(`Express on port ${app.get('port')}`);
-});
+}); 
