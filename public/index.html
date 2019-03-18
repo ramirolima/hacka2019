@@ -3,18 +3,76 @@
     <head>
         <meta charset='UTF-8'>
         <title>Damn Example</title>
+
+        <style>
+            .title {
+                background-color: #609;
+                padding-left: 15px;
+                padding-top: 1px;                
+            }
+            body {margin: 0px}
+            .lista {
+                background-color: white;
+                margin: 0px;
+                padding: 30px;                
+            }
+            .item {
+                border-style: solid;
+                border-color: #609;
+                border-radius: 10px;
+                display: inline-block;
+                width: 80px;
+                height: 100px;
+                margin-right: 20px;                
+            }
+            .close{
+                position: fixed;
+                background-color: white;
+                border: none;
+                color: red;
+                font-size: 30px
+
+            }
+            .formu{
+                padding: 10px;
+                padding-left:400px;
+                margin-top: 50px;
+                margin-bottom: 250px;
+            }
+
+            .btn{
+                background-color: #609;
+                color: white;
+                border-style: solid;
+                border-color: #609;
+                border-radius: 10px;
+            }
+
+            .campo{
+                border-radius: 8px;                
+            }
+
+            .form2{
+                margin-left: 10px;  
+            }
+        </style>
+
+
     </head>
 
     <body>
-        <h1>Liguagens de programação</h1><br>
+        <div class='title'>
+        <h1 style="color: white">Liguagens de programação</h1><br>
+        </div>
         <div id="list"></div>
-        <form onsubmit="createCourse(event)">
-            <input type="text" id="nome" placeholder="Nome" autofocus>
-            <input type="text" id="categoria" placeholder="Categoria" autofocus>
-            <input type="submit" value="Criar">  
-            <br><br><br><br><br>
-            <input type="submit" onclick="login()" value="Login">  
-            <input type="submit" onclick="logout()" value="Logout">  
+        <form class="formu" onsubmit="createCourse(event)">
+            <input class="campo" type="text" id="nome" placeholder="Nome" autofocus>
+            <input class="campo" type="text" id="categoria" placeholder="Categoria" autofocus>
+            <input class="btn" type="submit" value="Criar">  
+        </form>
+        <form class="form2">
+                <input class="btn" type="submit" onclick="login()" value="Login">  
+                <input class="btn" type="submit" onclick="logout()" value="Logout">  
         </form>
     </body>
 
@@ -91,18 +149,10 @@
             })
             .then(function(response){
                 response.json().then(function(data){
-
-                    // var li = '';
-                    // var ul = '<ul>';
-                    // for(var i =0; i < data.length; i++){
-                        // li += '<li>'+data[i].nome+ ' - '+data[i].categoria+'</li>'+
-                        // `<button onclick=removeCourse(${data[i]._id})>x</button>`
-                    // }
-                    // document.getElementById("list").innerHTML = ul+li+'</ul>';
-
-                    const itens = data.map(item => '<li>'+item.nome+ ' - '+item.categoria+'</li>'+
-                    `<button onclick=removeCourse('${item._id}')>x</button>`);                    
-                    document.getElementById("list").innerHTML = '<ul>'+itens.join('')+'</ul>';
+                    const itens = data.map(item => '<div class="item"><li"><img src="https://pluralsight.imgix.net/paths/path-icons/nodejs-601628d09d.png?w=70">'+                        
+                        item.nome+ ' - '+item.categoria+'</li>'+
+                    `<button class="close" onclick=removeCourse('${item._id}')>x</button></div>`);                    
+                    document.getElementById("list").innerHTML = '<ul class="lista">'+itens.join('')+'</ul>';
                 });
             })       
             .catch(() => {
