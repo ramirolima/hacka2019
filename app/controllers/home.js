@@ -5,28 +5,11 @@ module.exports = function(app){
 
     var controller = {
         index: function(req,res){
-            Curso.find({},[],{sort: {nome:1} }).exec().then((cursos) => {
-                res.send(cursos);
-            })
-            
-        },
-        newItem:function(req,res){
-            var curso = new Curso(req.body);
-            curso.save(function(err,curso){
-                if(err)
-                    res.status(500).end();
-                else
-                    res.json(curso);
+            res.send({
+                teste:1
             });
-        },
-        remove: function(req,res){
-             Curso.remove({_id: req.params.id}, function(err){
-                if(!err)
-                    res.json({message: 'sucess'});
-                else
-                    res.status(500).end();
-             })
-        },
+            
+        },        
         login: function(req, res){
             var name = req.body.name,
                 password = req.body.password;
